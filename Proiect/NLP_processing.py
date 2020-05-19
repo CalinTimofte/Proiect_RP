@@ -5,7 +5,7 @@ from nltk import word_tokenize
 
 def preprocess(sents):
     lmtzr = WordNetLemmatizer()
-    lemmatized = [[lmtzr.lemmatize(word) for word in word_tokenize(s)]
+    lemmatized = [[lmtzr.lemmatize(word) for word in word_tokenize(s.lower())]
                   for s in sents]
     punctuation=[",",".","!","?",":",";","..."]
     lemmatized_witout_p=[[word for word in lemmatized[i] if not word in punctuation] for i in range(0,len(lemmatized))]
@@ -21,17 +21,22 @@ def get_S_M_P(sents):
 
     for word in lemmatized_witout_p[2]:
         if(word[1]) in ['JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'NNPS', 'PRP', 'PRP$']:
-            if word in lemmatized_witout_p[0]:
-                P.append(word)
-            elif word in lemmatized_witout_p[1]:
-                S.append(word)
+            if word[0] in sents[0]:
+                P.append(word[0])
+            elif word[0] in sents[1]:
+                S.append(word[0])
 
     for word in lemmatized_witout_p[0]:
         if (word[1]) in ['JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'NNPS', 'PRP', 'PRP$']:
-            if word in lemmatized_witout_p[1] and not word in lemmatized_witout_p[2]:
-                M.append(word)
+            if word[0] in sents[1] and not word[0] in sents[2]:
+                M.append(word[0])
 
     return (S,M,P)
+
+def check_S_M_P(sents):
+    S, M, P = get_S_M_P(sents)
+    if not S or not M or not P:
+        raise ValueError('Bad input')
 
 def searchnegative(lista):
     negation = False
@@ -83,4 +88,3 @@ def get_premise_types(sents):
             letter = get_middle_letter(i)
             conclusion = "S" + letter + "P"
     return (major_premise, minor_premise, conclusion)
-

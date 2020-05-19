@@ -2,11 +2,14 @@ import clips
 import NLP_processing as nlp
 
 
-example = ['Humans are mortal.', 'Socrates is a human', 'Socrates is a mortal']
+example = ['Humans are not mortal.', 'Socrates is a human', 'Socrates is a mortal']
 
 
 def run_CLIPS(input):
     premise_types = nlp.get_premise_types(input)
+
+    nlp.check_S_M_P(nlp.preprocess(input))
+
     env = clips.Environment()
     env.clear()
 
@@ -24,13 +27,13 @@ def run_CLIPS(input):
     env.batch_star("Proiect.clp")
     env.reset()
     env.run()
-
-    for fact in env.facts():
-        print(fact)
+    #
+    # for fact in env.facts():
+    #     print(fact)
 
     # for rule in env.rules():
     #     print(rule)
 
-
-
-run_CLIPS(example)
+#
+#
+# run_CLIPS(example)

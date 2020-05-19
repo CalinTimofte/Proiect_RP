@@ -7,13 +7,6 @@
 ;	(Running)
 )
 
-(defrule X
-	(Running)
-	=>
-	(printout t "Nu exista rezultat!")
-	(printout t crlf)
-)
-
 (defrule A
 	?x <- (Running)
 	(not (exists (Finish)) )
@@ -90,4 +83,11 @@
 	(printout t "Rezultat corect, SoP!" crlf)
 	(assert (Finish))
 	(retract ?x)
+)
+
+(defrule X
+	(Running)
+	=>
+	(printout t "Silogismul este gresit!")
+	(printout t crlf)
 )
